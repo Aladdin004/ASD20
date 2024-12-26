@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engagement Memories</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f1f1;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ffda79;
+            text-align: center;
+            padding: 20px;
+        }
+        header h1 {
+            color: #d47d7d;
+            font-size: 2.5rem;
+        }
+        header p {
+            color: #6b3d3d;
+            font-size: 1.2rem;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        .gallery img, .gallery video {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        footer {
+            background-color: #ffda79;
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        footer p {
+            color: #6b3d3d;
+            font-size: 1rem;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>خطوبتي</h1>
+        <p>20 ديسمبر - أول يوم في حياتي الحقيقية</p>
+    </header>
+    <main>
+        <div class="gallery">
+            <!-- Add images and videos here -->
+            <img src="image1.jpg" alt="Engagement Photo 1">
+            <img src="image2.jpg" alt="Engagement Photo 2">
+            <video controls>
+                <source src="video1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <video controls>
+                <source src="video2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 ذكريات جميلة</p>
+    </footer>
+</body>
+</html>
