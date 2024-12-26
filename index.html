@@ -21,16 +21,12 @@
             font-size: 2.5rem;
             font-weight: bold;
             color: #ffd700;
-            -webkit-text-stroke: 1px #ffffff;
-            text-stroke: 1px #ffffff;
         }
         header p {
             font-size: 1.2rem;
             direction: rtl;
             font-weight: bold;
             color: #ffd700;
-            -webkit-text-stroke: 1px #ffffff;
-            text-stroke: 1px #ffffff;
         }
         .gallery {
             display: grid;
@@ -57,8 +53,6 @@
             margin: 0;
             font-weight: bold;
             color: #ffd700;
-            -webkit-text-stroke: 1px #ffffff;
-            text-stroke: 1px #ffffff;
         }
         .heart {
             position: absolute;
@@ -94,6 +88,25 @@
                 transform: translateY(-100px) rotate(-45deg);
             }
         }
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 2rem;
+            font-weight: bold;
+            color: red;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+        .message span {
+            color: #d4af37;
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -106,6 +119,14 @@
                 setTimeout(() => heart.remove(), 1500);
             };
 
+            const showMessage = () => {
+                const message = document.querySelector('.message');
+                message.style.display = 'block';
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 2000);
+            };
+
             document.querySelectorAll('.gallery img').forEach(img => {
                 img.addEventListener('click', (e) => {
                     const rect = e.target.getBoundingClientRect();
@@ -116,6 +137,12 @@
                             createHeart(x + (Math.random() - 0.5) * 100, y + (Math.random() - 0.5) * 100);
                         }, i * 100);
                     }
+                });
+            });
+
+            document.querySelectorAll('.gallery video').forEach(video => {
+                video.addEventListener('click', () => {
+                    showMessage();
                 });
             });
         });
@@ -140,6 +167,7 @@
                 Your browser does not support the video tag.
             </video>
         </div>
+        <div class="message">بحبك يا شاهي ❤️</div>
     </main>
     <footer>
         <p>&copy; 2024 ذكريات جميلة</p>
