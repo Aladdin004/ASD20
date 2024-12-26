@@ -54,58 +54,36 @@
             font-weight: bold;
             color: #ffffff;
         }
-        .heart {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: red;
-            transform: rotate(-45deg);
-            animation: float 1.5s ease-in-out forwards;
-        }
-        .heart:before, .heart:after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: red;
-            border-radius: 50%;
-        }
-        .heart:before {
-            top: -10px;
-            left: 0;
-        }
-        .heart:after {
-            left: 10px;
-            top: 0;
-        }
-        @keyframes float {
-            0% {
-                opacity: 1;
-                transform: translateY(0) rotate(-45deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-100px) rotate(-45deg);
-            }
-        }
-        .message {
+        .modal {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ffffff;
-            text-align: center;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
             display: none;
+            justify-content: center;
+            align-items: center;
             z-index: 1000;
         }
-        .message span {
-            color: #d4af37;
+        .modal img, .modal video {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .modal .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 2rem;
+            color: #ffffff;
+            cursor: pointer;
+        }
+        .video-caption {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
         }
         @media (max-width: 600px) {
             header h1 {
@@ -117,46 +95,46 @@
             .gallery {
                 grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             }
-            .message {
-                font-size: 1.5rem;
+            .video-caption {
+                font-size: 1.2rem;
             }
         }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const createHeart = (x, y) => {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.style.left = `${x}px`;
-                heart.style.top = `${y}px`;
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 1500);
+            const modal = document.createElement('div');
+            modal.classList.add('modal');
+            modal.innerHTML = `
+                <span class="close">&times;</span>
+                <img src="" alt="">
+                <video controls style="display: none;"></video>
+            `;
+            document.body.appendChild(modal);
+
+            const closeModal = () => {
+                modal.style.display = 'none';
+                modal.querySelector('img').style.display = 'none';
+                modal.querySelector('video').style.display = 'none';
             };
 
-            const showMessage = () => {
-                const message = document.querySelector('.message');
-                message.style.display = 'block';
-                setTimeout(() => {
-                    message.style.display = 'none';
-                }, 2000);
-            };
+            modal.querySelector('.close').addEventListener('click', closeModal);
 
-            document.querySelectorAll('.gallery img').forEach(img => {
-                img.addEventListener('click', (e) => {
-                    const rect = e.target.getBoundingClientRect();
-                    const x = rect.left + rect.width / 2;
-                    const y = rect.top + rect.height / 2;
-                    for (let i = 0; i < 10; i++) {
-                        setTimeout(() => {
-                            createHeart(x + (Math.random() - 0.5) * 100, y + (Math.random() - 0.5) * 100);
-                        }, i * 100);
+            document.querySelectorAll('.gallery img, .gallery video').forEach(media => {
+                media.addEventListener('click', (e) => {
+                    const isVideo = media.tagName === 'VIDEO';
+                    const modalImage = modal.querySelector('img');
+                    const modalVideo = modal.querySelector('video');
+
+                    if (isVideo) {
+                        modalVideo.style.display = 'block';
+                        modalVideo.src = media.querySelector('source').src;
+                        document.querySelector('.video-caption').style.display = 'block';
+                    } else {
+                        modalImage.style.display = 'block';
+                        modalImage.src = media.src;
                     }
-                });
-            });
 
-            document.querySelectorAll('.gallery video').forEach(video => {
-                video.addEventListener('click', () => {
-                    showMessage();
+                    modal.style.display = 'flex';
                 });
             });
         });
@@ -169,19 +147,18 @@
     </header>
     <main>
         <div class="gallery">
-            <!-- Add images and videos here -->
             <img src="https://i.ibb.co/DL05sf2/IMG-20241221-WA0002.jpg" alt="Engagement Photo 1">
             <img src="image2.jpg" alt="Engagement Photo 2">
-            <video controls>
+            <video poster="video-thumbnail1.jpg">
                 <source src="lv_0_20241222195717~2.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <video controls>
+            <video poster="video-thumbnail2.jpg">
                 <source src="video2.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
-        <div class="message">بحبك يا شاهي ❤️</div>
+        <div class="video-caption" style="display: none;">بحبك يا شاهي ❤️</div>
     </main>
     <footer>
         <p>&copy; 2024 ذكريات جميلة</p>
