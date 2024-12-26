@@ -54,8 +54,41 @@
             font-weight: bold;
             color: #ffffff;
         }
-        .heart {
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .modal .close {
             position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 2rem;
+            color: #ffffff;
+            cursor: pointer;
+        }
+        .video-caption {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+            animation: slide-down 1s ease-in-out;
+        }
+        .heart {
+            position: fixed;
             width: 20px;
             height: 20px;
             background-color: red;
@@ -85,27 +118,28 @@
             }
             100% {
                 opacity: 0;
-                transform: translateY(-100px) rotate(-45deg);
+                transform: translateY(-200px) rotate(-45deg);
             }
         }
-        .message {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            font-size: 2rem;
-            font-weight: bold;
+        @keyframes slide-down {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .love-message {
             color: #ffffff;
             text-align: center;
-            display: none;
-            z-index: 1000;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
         }
-        .message span {
-            color: #d4af37;
+        .love-message span {
+            color: red;
         }
         @media (max-width: 600px) {
             header h1 {
@@ -117,32 +151,36 @@
             .gallery {
                 grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             }
-            .message {
-                font-size: 1.5rem;
+            .video-caption {
+                font-size: 1.2rem;
+            }
+            .love-message {
+                font-size: 1.2rem;
             }
         }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const createHeart = (x, y) => {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.style.left = `${x}px`;
-                heart.style.top = `${y}px`;
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 1500);
+            const modal = document.createElement('div');
+            modal.classList.add('modal');
+            modal.innerHTML = `
+                <span class="close">&times;</span>
+                <img src="" alt="">
+            `;
+            document.body.appendChild(modal);
+
+            const closeModal = () => {
+                modal.style.display = 'none';
             };
 
-            const showMessage = () => {
-                const message = document.querySelector('.message');
-                message.style.display = 'block';
-                setTimeout(() => {
-                    message.style.display = 'none';
-                }, 2000);
-            };
+            modal.querySelector('.close').addEventListener('click', closeModal);
 
-            document.querySelectorAll('.gallery img').forEach(img => {
-                img.addEventListener('click', (e) => {
+            document.querySelectorAll('.gallery img').forEach(image => {
+                image.addEventListener('click', (e) => {
+                    const modalImage = modal.querySelector('img');
+                    modalImage.src = image.src;
+                    modal.style.display = 'flex';
+
                     const rect = e.target.getBoundingClientRect();
                     const x = rect.left + rect.width / 2;
                     const y = rect.top + rect.height / 2;
@@ -156,32 +194,53 @@
 
             document.querySelectorAll('.gallery video').forEach(video => {
                 video.addEventListener('click', () => {
-                    showMessage();
+                    const caption = document.querySelector('.video-caption');
+                    caption.style.display = 'block';
+                    setTimeout(() => {
+                        caption.style.display = 'none';
+                    }, 2000);
+
+                    for (let i = 0; i < 20; i++) {
+                        setTimeout(() => {
+                            createHeart(
+                                Math.random() * window.innerWidth,
+                                Math.random() * window.innerHeight
+                            );
+                        }, i * 200);
+                    }
                 });
             });
+
+            const createHeart = (x, y) => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = `${x}px`;
+                heart.style.top = `${y}px`;
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 1500);
+            };
         });
     </script>
 </head>
 <body>
     <header>
-        <h1>خطوبتي</h1>
+        <h1>خطوبتنا</h1>
         <p><span style="font-weight: bold;">20</span> ديسمبر - أول يوم في حياتي الحقيقية</p>
     </header>
     <main>
         <div class="gallery">
-            <!-- Add images and videos here -->
             <img src="https://i.ibb.co/DL05sf2/IMG-20241221-WA0002.jpg" alt="Engagement Photo 1">
             <img src="image2.jpg" alt="Engagement Photo 2">
             <video controls>
                 <source src="lv_0_20241222195717~2.mp4" type="video/mp4">
                 Your browser does not support the video tag.
-            </video>
             <video controls>
                 <source src="video2.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
-        <div class="message">بحبك يا شاهي ❤️</div>
+        <div class="video-caption">بحبك يا شاهي ❤️</div>
+        <div class="love-message">بحبك يا شاهي <span>❤️❤️</span></div>
     </main>
     <footer>
         <p>&copy; 2024 ذكريات جميلة</p>
