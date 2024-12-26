@@ -18,15 +18,20 @@
             position: relative;
         }
         header h1 {
-            color: #6e6e6e;
+            color: #ffffff;
             font-size: 2.5rem;
             font-weight: bold;
+            text-shadow: 2px 2px 4px #fff, -2px -2px 4px #fff;
+            background: linear-gradient(to right, #ffd700, #fffacd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         header p {
-            color: #333333;
+            color: #ffffff;
             font-size: 1.2rem;
             direction: rtl;
             font-weight: bold;
+            text-shadow: 2px 2px 4px #fff, -2px -2px 4px #fff;
         }
         .gallery {
             display: grid;
@@ -39,6 +44,7 @@
             height: auto;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
         }
         footer {
             background-color: #d4af37;
@@ -47,33 +53,69 @@
             margin-top: 20px;
         }
         footer p {
-            color: #6e6e6e;
+            color: #ffffff;
             font-size: 1rem;
             margin: 0;
             font-weight: bold;
+            text-shadow: 1px 1px 3px #fff;
         }
-        .fireworks {
+        .heart {
             position: absolute;
-            top: 0;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            transform: rotate(-45deg);
+            animation: float 1.5s ease-in-out forwards;
+        }
+        .heart:before, .heart:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            border-radius: 50%;
+        }
+        .heart:before {
+            top: -10px;
             left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 10;
+        }
+        .heart:after {
+            left: 10px;
+            top: 0;
+        }
+        @keyframes float {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(-45deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) rotate(-45deg);
+            }
         }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const createFirework = (x, y) => {
-                const firework = document.createElement('div');
-                firework.className = 'firework';
-                firework.style.left = `${x}px`;
-                firework.style.top = `${y}px`;
-                document.body.appendChild(firework);
-                setTimeout(() => firework.remove(), 1500);
+            const createHeart = (x, y) => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = `${x}px`;
+                heart.style.top = `${y}px`;
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 1500);
             };
-            document.body.addEventListener('click', (e) => {
-                createFirework(e.clientX, e.clientY);
+
+            document.querySelectorAll('.gallery img').forEach(img => {
+                img.addEventListener('click', (e) => {
+                    const rect = e.target.getBoundingClientRect();
+                    const x = rect.left + rect.width / 2;
+                    const y = rect.top + rect.height / 2;
+                    for (let i = 0; i < 10; i++) {
+                        setTimeout(() => {
+                            createHeart(x + (Math.random() - 0.5) * 100, y + (Math.random() - 0.5) * 100);
+                        }, i * 100);
+                    }
+                });
             });
         });
     </script>
