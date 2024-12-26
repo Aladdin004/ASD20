@@ -163,10 +163,19 @@
             modal.querySelector('.close').addEventListener('click', closeModal);
 
             document.querySelectorAll('.gallery img').forEach(image => {
-                image.addEventListener('click', () => {
+                image.addEventListener('click', (e) => {
                     const modalImage = modal.querySelector('img');
                     modalImage.src = image.src;
                     modal.style.display = 'flex';
+
+                    const rect = e.target.getBoundingClientRect();
+                    const x = rect.left + rect.width / 2;
+                    const y = rect.top + rect.height / 2;
+                    for (let i = 0; i < 10; i++) {
+                        setTimeout(() => {
+                            createHeart(x + (Math.random() - 0.5) * 100, y + (Math.random() - 0.5) * 100);
+                        }, i * 100);
+                    }
                 });
             });
 
@@ -202,7 +211,7 @@
 </head>
 <body>
     <header>
-        <h1>خطوبتي</h1>
+        <h1>خطوبتنا</h1>
         <p><span style="font-weight: bold;">20</span> ديسمبر - أول يوم في حياتي الحقيقية</p>
     </header>
     <main>
